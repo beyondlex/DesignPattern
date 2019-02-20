@@ -57,34 +57,28 @@ interface SkinFactory {
     public ComboBox createComboBox();
 }
 class SpringSkinFactory implements SkinFactory {
-
     @Override
     public Button createButton() {
         return new SpringButton();
     }
-
     @Override
     public TextField createTextField() {
         return new SpringTextField();
     }
-
     @Override
     public ComboBox createComboBox() {
         return new SpringComboBox();
     }
 }
 class SummerSkinFactory implements SkinFactory {
-
     @Override
     public Button createButton() {
         return new SummerButton();
     }
-
     @Override
     public TextField createTextField() {
         return new SummerTextField();
     }
-
     @Override
     public ComboBox createComboBox() {
         return new SummerComboBox();
