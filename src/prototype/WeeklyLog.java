@@ -1,6 +1,8 @@
 package prototype;
 
-public class WeeklyLog implements Cloneable{
+import java.io.*;
+
+public class WeeklyLog implements Serializable {
     private String name;
     private String date;
     private String content;
@@ -41,6 +43,18 @@ public class WeeklyLog implements Cloneable{
         }
     }
 
+    public WeeklyLog deepClone() throws IOException, ClassNotFoundException {
+        // 将对象写入流中
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(this);
+
+        // 将对象从流中取出
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        return (WeeklyLog) objectInputStream.readObject();
+    }
+
     public Attachment getAttachment() {
         return attachment;
     }
@@ -50,7 +64,7 @@ public class WeeklyLog implements Cloneable{
     }
 }
 
-class Attachment {
+class Attachment implements Serializable{
     private String name;
 
     public void download() {
@@ -80,11 +94,21 @@ class Client {
         log1 = new WeeklyLog();
         Attachment attachment = new Attachment();
         log1.setAttachment(attachment);
-        log2 = log1.clone();
+        //log2 = log1.clone();
 
-        System.out.println("log1 == log2 ? " + (log1 == log2));// false
-        // 浅克隆：引用对象(attachment)只会克隆内存地址，因此是同一个对象
-        System.out.println("log1.attachment == log2.attachment ? " + (log1.getAttachment() == log2.getAttachment()));// true
+        //System.out.println("log1 == log2 ? " + (log1 == log2));// false
+        //// 浅克隆：引用对象(attachment)只会克隆内存地址，因此是同一个对象
+        //System.out.println("log1.attachment == log2.attachment ? " + (log1.getAttachment() == log2.getAttachment()));// true
+
+        try {
+            WeeklyLog log3 = log1.deepClone();
+            System.out.println("log1 == log3 ? " + (log1 == log3));// false
+            // 深克隆
+            System.out.println("log1.attachment == log3.attachment ? " + (log1.getAttachment() == log3.getAttachment()));// false
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private static void writeLog(WeeklyLog log) {
         System.out.println("---weekly report---");
