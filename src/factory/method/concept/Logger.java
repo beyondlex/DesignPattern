@@ -23,18 +23,23 @@ class FileLogger implements Logger {
 // -------------------------
 // 一个具体的工厂 对应 一个具体的产品
 
-interface LoggerFactory {
-    public Logger createLogger();
+abstract class LoggerFactory {
+
+    public void writeLog() {
+        Logger logger = this.createLogger();
+        logger.writeLog();
+    }
+    public abstract Logger createLogger();
 }
 
-class DatabaseLoggerFactory implements LoggerFactory {
+class DatabaseLoggerFactory extends LoggerFactory {
     @Override
     public Logger createLogger() {
         return new DatabaseLogger();
     }
 }
 
-class FileLoggerFactory implements LoggerFactory {
+class FileLoggerFactory extends LoggerFactory {
     @Override
     public Logger createLogger() {
         return new FileLogger();
@@ -45,10 +50,13 @@ class FileLoggerFactory implements LoggerFactory {
 
 class Client {
     public static void main(String[] args) {
-        LoggerFactory loggerFactory;
-        loggerFactory = new DatabaseLoggerFactory();
-        loggerFactory.createLogger().writeLog();
-        loggerFactory = new FileLoggerFactory();
-        loggerFactory.createLogger().writeLog();
+        //LoggerFactory loggerFactory;
+        //loggerFactory = new DatabaseLoggerFactory();
+        //loggerFactory.createLogger().writeLog();
+        //loggerFactory = new FileLoggerFactory();
+        //loggerFactory.createLogger().writeLog();
+
+        new DatabaseLoggerFactory().writeLog();
+        new FileLoggerFactory().writeLog();
     }
 }
