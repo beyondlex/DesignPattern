@@ -4,6 +4,7 @@ public class WeeklyLog implements Cloneable{
     private String name;
     private String date;
     private String content;
+    private Attachment attachment;
 
     public String getContent() {
         return content;
@@ -39,20 +40,51 @@ public class WeeklyLog implements Cloneable{
             return null;
         }
     }
+
+    public Attachment getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
+    }
+}
+
+class Attachment {
+    private String name;
+
+    public void download() {
+        System.out.println("downloading file: " + name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return name;
+    }
 }
 
 class Client {
     public static void main(String[] args) {
-        WeeklyLog log1 = new WeeklyLog();
-        log1.setName("jim");
-        log1.setDate("week 1");
-        log1.setContent("nothing to do");
-        writeLog(log1);
+        //WeeklyLog log1 = new WeeklyLog();
+        //log1.setName("jim");
+        //log1.setDate("week 1");
+        //log1.setContent("nothing to do");
+        //writeLog(log1);
+        //
+        //WeeklyLog log2 = log1.clone();
+        //log2.setDate("week 2");
+        //writeLog(log2);
+        WeeklyLog log1, log2;
+        log1 = new WeeklyLog();
+        Attachment attachment = new Attachment();
+        log1.setAttachment(attachment);
+        log2 = log1.clone();
 
-        WeeklyLog log2 = log1.clone();
-        log2.setDate("week 2");
-        writeLog(log2);
-
+        System.out.println("log1 == log2 ? " + (log1 == log2));// false
+        // 浅克隆：引用对象(attachment)只会克隆内存地址，因此是同一个对象
+        System.out.println("log1.attachment == log2.attachment ? " + (log1.getAttachment() == log2.getAttachment()));// true
     }
     private static void writeLog(WeeklyLog log) {
         System.out.println("---weekly report---");
