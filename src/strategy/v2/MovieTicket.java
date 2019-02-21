@@ -46,6 +46,14 @@ class VipDiscount implements Discount {
     }
 }
 
+class BadmanDiscount implements Discount {
+    @Override
+    public double calculate(double price) {
+        System.out.println("bad man ticket: ");
+        return price * 1.5;
+    }
+}
+
 class Client {
 
     public static void main(String[] args) {
@@ -64,5 +72,8 @@ class Client {
 
         ticket.setDiscount(new VipDiscount());
         System.out.println("vip price: " + ticket.getPrice());
+
+        ticket.setDiscount(new BadmanDiscount());
+        System.out.println("bad man price: " + ticket.getPrice());
     }
 }
